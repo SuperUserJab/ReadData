@@ -1,0 +1,81 @@
+<button id="myButton">Download</button>
+
+
+
+
+<script>
+
+
+  const objectToJson=function(data)
+  {
+     const  jsonRows=[];
+     const headers=Object.keys(data[0]);
+     console.log(jsonRows);
+
+
+     for( const row of data)
+     {
+     const values=  headers.map(header=>{
+       const escaped=row[header];
+     
+
+       return escaped;
+     });
+     jsonRows.push(values.join(','));
+
+     }
+    return jsonRows;
+  }
+  
+  const download=function(data)
+  {
+    const blob=new Blob([data], {type:'text/json;charset=utf-8'});
+    const url=window.URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.setAttribute('hidden','');
+    a.setAttribute('href',url);
+    a.setAttribute('download', 'download.json');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  const getReport=async function()
+  { 
+    const jsonUrl='https://jsonplaceholder.typicode.com/photos';
+    const res=await fetch(jsonUrl);
+    const json=await res.json();
+
+    const data=json.map(row=>({
+      id: row.id,
+      albumId: row.albumId,
+      title: row.title,
+      url: row.url,
+      thumbnailUrl: row.thumbnailUrl
+
+
+    }));
+    console.log(data);
+    const jsonData=objectToJson(data);
+
+    var elem=JSON.stringify(jsonData);
+  
+
+    download(elem);
+
+
+  };
+
+
+  (function()
+  {
+    const button=document.getElementById('myButton');
+    button.addEventListener('click', getReport);
+
+
+  })();
+
+</script>
+<body>
+ 
+</body>
