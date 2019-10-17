@@ -6,26 +6,7 @@
 <script>
 
 
-  const objectToJson=function(data)
-  {
-     const  jsonRows=[];
-     const headers=Object.keys(data[0]);
-     console.log(jsonRows);
 
-
-     for( const row of data)
-     {
-     const values=  headers.map(header=>{
-       const escaped=row[header];
-     
-
-       return escaped;
-     });
-     jsonRows.push(values.join(','));
-
-     }
-    return jsonRows;
-  }
   
   const download=function(data)
   {
@@ -56,12 +37,10 @@
 
     }));
     console.log(data);
-    const jsonData=objectToJson(data);
-
-    var elem=JSON.stringify(jsonData);
+    
   
 
-    download(elem);
+    download(JSON.stringify(data));
 
 
   };
